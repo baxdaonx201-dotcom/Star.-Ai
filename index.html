@@ -1,77 +1,86 @@
 
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>STAR AI</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#080d19;color:white;font-family:Arial}
-header{padding:20px;background:#101e35;border-bottom:1px solid #263754}
-.logo{font-size:27px;font-weight:bold;color:#60a5fa}
-.logo span{color:white}
-main{max-width:650px;margin:auto;padding:20px}
-.welcome{text-align:center;margin:65px 0 35px}
-.brain{font-size:65px;color:#60a5fa}
-h1{font-size:30px}
-p{color:#9caec9;line-height:1.6}
-.actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:center}
-.actions button{background:#172641;color:#b9d8ff;border:1px solid #304b72;border-radius:20px;padding:12px}
-#chat{display:flex;flex-direction:column;gap:14px;padding-bottom:100px}
-.msg{padding:14px;border-radius:15px;line-height:1.5;max-width:90%;white-space:pre-wrap}
-.ai{background:#14233c;align-self:flex-start}
-.user{background:#1766cf;align-self:flex-end}
-.input-area{position:fixed;bottom:0;left:0;right:0;background:#0c1425;padding:12px;display:flex;gap:8px}
-input{flex:1;min-width:0;background:#17243b;border:1px solid #304568;border-radius:13px;padding:14px;color:white;font-size:16px}
-#send{background:#2582f5;color:white;border:0;border-radius:13px;padding:0 20px;font-size:20px}
+body{
+ margin:0;background:#080d1c;color:white;
+ font-family:Arial,sans-serif;
+ display:flex;flex-direction:column;height:100vh
+}
+header{
+ padding:20px;text-align:center;
+ background:#111a32;border-bottom:1px solid #26385e
+}
+header h1{margin:0;color:#55c8ff}
+header p{margin:7px;color:#a9bad5}
+#chat{
+ flex:1;overflow-y:auto;padding:18px;
+ display:flex;flex-direction:column;gap:14px
+}
+.msg{
+ max-width:85%;padding:13px 16px;
+ border-radius:15px;line-height:1.5;
+ white-space:pre-wrap
+}
+.user{align-self:flex-end;background:#176bd1}
+.bot{align-self:flex-start;background:#17243d}
+form{
+ display:flex;gap:9px;padding:14px;
+ background:#111a32
+}
+input{
+ flex:1;min-width:0;padding:14px;
+ border:1px solid #34496c;border-radius:12px;
+ background:#080d1c;color:white;font-size:16px
+}
+button{
+ border:0;border-radius:12px;
+ background:#168cff;color:white;
+ padding:0 20px;font-weight:bold
+}
 </style>
 </head>
 <body>
-<header><div class="logo">✦ STAR <span>AI</span></div></header>
-<main>
-<section class="welcome">
-<div class="brain">✧</div>
-<h1>Halo, teman! 👋</h1>
-<p>Gw STAR AI. Partner pribadi lu untuk ngobrol, coding, dan membangun proyek keren.</p>
-<div class="actions">
-<button onclick="suggest('Bantu gw bikin website')">💻 Bikin website</button>
-<button onclick="suggest('Bantu gw belajar coding')">🧠 Belajar coding</button>
-<button onclick="suggest('Bantu gw bikin APK')">📱 Bikin APK</button>
+<header>
+<h1>⭐ STAR AI</h1>
+<p>Asisten AI pribadi kamu</p>
+</header>
+<div id="chat">
+<div class="msg bot">Halo! 👋 Aku STAR AI. Ada yang bisa aku bantu?</div>
 </div>
-</section>
-<div id="chat"></div>
-</main>
-<div class="input-area">
-<input id="message" placeholder="Tanya STAR AI...">
-<button id="send" onclick="sendMessage()">➤</button>
-</div>
+<form id="form">
+<input id="input" placeholder="Tulis pesan..." autocomplete="off">
+<button type="submit">Kirim</button>
+</form>
 <script>
-const chat=document.getElementById('chat');
-const input=document.getElementById('message');
+const form=document.getElementById("form");
+const input=document.getElementById("input");
+const chat=document.getElementById("chat");
 
 function addMessage(text,type){
-const div=document.createElement('div');
-div.className='msg '+type;
-div.textContent=text;
-chat.appendChild(div);
-window.scrollTo(0,document.body.scrollHeight);
+ const div=document.createElement("div");
+ div.className="msg "+type;
+ div.textContent=text;
+ chat.appendChild(div);
+ chat.scrollTop=chat.scrollHeight;
 }
-function suggest(text){
-input.value=text;
-sendMessage();
-}
-function sendMessage(){
-const text=input.value.trim();
-if(!text)return;
-addMessage(text,'user');
-input.value='';
-setTimeout(()=>{
-addMessage('Halo! Gw STAR AI ✨ Gw siap bantu lu. Ceritain proyek apa yang mau kita kerjakan!','ai');
-},500);
-}
-input.addEventListener('keydown',e=>{
-if(e.key==='Enter')sendMessage();
+
+form.addEventListener("submit",function(e){
+ e.preventDefault();
+ const message=input.value.trim();
+ if(!message)return;
+ addMessage(message,"user");
+ input.value="";
+ addMessage(
+ "Pesan kamu sudah diterima! ⭐\n\nAku masih dalam mode demo. Untuk menjawab pertanyaan sungguhan, STAR AI perlu dihubungkan ke API AI.",
+ "bot"
+ );
 });
 </script>
 </body>
